@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Coronavirus Infections</title>
+	<meta name="description" content="This page shows you infections of the Coronavirus per country and in detail with the numbers of every day.">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.teal-indigo.min.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+	<script defer src="js/main.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+	<link rel="manifest" href="manifest.json">
+	<meta name="theme-color" content="#ffffff">
+	<link rel="apple-touch-icon" sizes="192x192" href="icons/icon-192x192.png">
+	<link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+
+	<link rel="apple-touch-icon" sizes="60x60" href="/favicons/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/favicons/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="/favicons/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/favicons/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="/favicons/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="/favicons/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="/favicons/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192"  href="/favicons/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="/favicons/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="/favicons/ms-icon-144x144.png">
+
+	<script type="text/javascript">
+		if ('serviceWorker' in navigator) {
+		  navigator.serviceWorker.register('service-worker.js');
+		}
+	</script>
+	<script type="text/javascript">
+		
+	</script>
+	<style type="text/css">
+		.jwidth {
+			/*max-width: 150px;*/
+			max-width: 30vw;
+			overflow: auto;
+		}
+		.co-table {
+			margin: 0 auto;
+		}
+		.co-table-div {
+			width: 100%;
+			padding-top: 8px;
+		}
+		.single-overview {
+			width: 100%;
+		}
+		.single-overview-td {
+			border-bottom: 1px dotted gray;
+		}
+		.single-chart-div {
+			text-align: center;
+			text-align: -webkit-center;
+		}
+		.single-chart-container {
+			width: 95vw;
+			height: 50vh;
+			overflow: hidden;
+			max-width: 700px;
+			max-height: 500px;
+		}
+	</style>
+</head>
+<body onload="CoOnLoad()">
+<!-- Always shows a header, even in smaller screens. -->
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+	<header class="mdl-layout__header">
+		<div class="mdl-layout__header-row">
+			<!-- Title -->
+			<span class="mdl-layout-title">Coronavirus Infections</span>
+			<!-- Add spacer, to align navigation to the right -->
+			<div class="mdl-layout-spacer"></div>
+			<!-- Navigation. We hide it in small screens. -->
+			<nav class="mdl-navigation mdl-layout--large-screen-only">
+				<div style="position: relative; padding: 16px;">
+					<button class="mdl-button mdl-js-button mdl-button--icon" onclick="CoStart();">
+						<i class="material-icons">home</i>
+					</button>
+				</div>
+			</nav>
+			<nav class="mdl-navigation mdl-layout--small-screen-only">
+				<div style="position: relative; padding: 16px;">
+					<button class="mdl-button mdl-js-button mdl-button--icon" onclick="CoStart();">
+						<i class="material-icons">home</i>
+					</button>
+				</div>
+			</nav>
+		</div>
+	</header>
+	<div class="mdl-layout__drawer">
+		<span class="mdl-layout-title">Coronavirus</span>
+		<nav class="mdl-navigation">
+			<a class="mdl-navigation__link" href="/">Overwiew</a>
+			<a class="mdl-navigation__link" href="/#data-source">Data Source</a>
+		</nav>
+	</div>
+	<main class="mdl-layout__content">
+		<div class="page-content">
+			<div id="page-overview" hidden>
+				<h5 style="text-align: center;">Coronavirus Infections by Country</h5>
+				<div id="overview-table" class="co-table-div sort">
+					<br>
+					<center>
+						<div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></div>
+					</center>
+				</div>
+				<br>
+			</div>
+			<div id="page-single-country" hidden>
+				<h5 style="text-align: center;" id="single-heading">Coronavirus Infections in ...</h5>
+				<div id="single-overview" class="single-overview">
+					<br>
+					<center>
+						<div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></div>
+					</center>
+				</div>
+				<div id="single-chart-div" class="single-chart-div">
+					<center>
+					<div class="single-chart-container">
+						<canvas id="single-chart" style="width: 95vw; height: 50vh; max-width: 700px; max-height: 500px;"></canvas>
+					</div>
+					</center>
+				</div><br>
+				<div id="single-table" class="co-table-div">
+				</div>
+				<br>
+			</div>
+			<div id="page-data-source" hidden>
+				<h5 style="text-align: center;" id="single-heading">Data Source</h5>
+				<p style="margin: 32px;">The data displayed on this site is using the <a href="https://pomber.github.io/covid19/timeseries.json" target="_BLANK">JSON time-series</a> from <a href="https://github.com/pomber" target="_BLANK">pomber</a> on <a href="https://github.com/pomber/covid19" target="_BLANK">GitHub</a>. It uses data from <a href="https://github.com/CSSEGISandData/COVID-19" target="_BLANK">CSSEGISandData/COVID-19</a> and merges it into a JSON file.</p>
+				<br>
+			</div>
+			<div id="page-offline" hidden>
+				<h5 style="text-align: center;" id="single-heading">Offline</h5>
+				<div style="margin: 32px;">
+					<p>You appear to be offline.</p>
+					<a href="/" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Refresh</a>
+				</div>
+				<br>
+			</div>
+		</div>
+	</main>
+</div>
+<script type="text/javascript" src="js/main.js"></script>
+</body>
+</html>
