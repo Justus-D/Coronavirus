@@ -278,6 +278,17 @@ function CoLoadSingle(countryName) {
 	xmlhttp.open("GET", url, true);
 	xmlhttp.send();
 }
+function singleChartLog() {
+	var state = document.getElementById("log-checkbox").checked;
+	if(state == true) {
+		singleChart.options.scales.yAxes[0].type = "logarithmic";
+		singleChart.update();
+	}
+	if(state == false) {
+		singleChart.options.scales.yAxes[0].type = "linear";
+		singleChart.update();
+	}
+}
 function CoDataSource() {
 	CoClearScreen();
 	history.pushState("","","#data-source");
