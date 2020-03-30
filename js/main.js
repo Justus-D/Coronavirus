@@ -273,6 +273,7 @@ function CoLoadSingle(countryName) {
 			singleChart.options = config.options;
 			singleChart.data = config.data;
 			singleChart.update();
+			singleChartLog();
 		}
 	};
 	xmlhttp.open("GET", url, true);
