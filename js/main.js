@@ -32,7 +32,7 @@ function CoSelectPage() {
 			CoOffline();
 			break;
 		default:
-			CoSingle(window.location.hash.substr(1));
+			CoSingle(window.location.hash.substr(1).replace("%20", " "));
 			break;
 	}
 }
