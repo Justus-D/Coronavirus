@@ -32,7 +32,7 @@ function CoSelectPage() {
 			CoOffline();
 			break;
 		default:
-			CoSingle(window.location.hash.substr(1));
+			CoSingle(window.location.hash.substr(1).replace("%20", " "));
 			break;
 	}
 }
@@ -273,10 +273,22 @@ function CoLoadSingle(countryName) {
 			singleChart.options = config.options;
 			singleChart.data = config.data;
 			singleChart.update();
+			singleChartLog();
 		}
 	};
 	xmlhttp.open("GET", url, true);
 	xmlhttp.send();
+}
+function singleChartLog() {
+	var state = document.getElementById("log-checkbox").checked;
+	if(state == true) {
+		singleChart.options.scales.yAxes[0].type = "logarithmic";
+		singleChart.update();
+	}
+	if(state == false) {
+		singleChart.options.scales.yAxes[0].type = "linear";
+		singleChart.update();
+	}
 }
 function CoDataSource() {
 	CoClearScreen();
