@@ -176,18 +176,25 @@ function CoLoadSingle(countryName) {
 			var CurrentCountryRecoveredArray = [];
 			var CurrentCountryDatesArray = [];
 			var CurrentCountryActiveCasesArray = [];
-			var out = '<table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp co-table"><thead><tr><th class="mdl-data-table__cell--non-numeric">Date</th><th>Infections</th><th>Deaths</th><th>Recovered</th></tr></thead><tbody>';
+			var out = '<table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp co-table"><thead><tr><th class="mdl-data-table__cell--non-numeric sort" data-sort="date">Date</th><th class="sort" data-sort="infections">Infections</th><th class="sort" data-sort="deaths">Deaths</th><th class="sort" data-sort="recovered">Recovered</th></tr></thead><tbody class="list">';
 			for (var i = 0; i < CurrentCountry.length; i++) {
 				CurrentCountryInfectionsArray.push(CurrentCountry[i]['confirmed']);
 				CurrentCountryDeathsArray.push(CurrentCountry[i]['deaths']);
 				CurrentCountryRecoveredArray.push(CurrentCountry[i]['recovered']);
 				CurrentCountryDatesArray.push(CurrentCountry[i]['date']);
 				CurrentCountryActiveCasesArray.push(CurrentCountry[i]['confirmed']-CurrentCountry[i]['recovered']-CurrentCountry[i]['deaths']);
-				out += '<tr><td class="mdl-data-table__cell--non-numeric">'+CurrentCountry[i]['date']+'</td><td>'+CurrentCountry[i]['confirmed']+'</td><td>'+CurrentCountry[i]['deaths']+'</td><td>'+CurrentCountry[i]['recovered']+'</td>'
+				out += '<tr><td class="mdl-data-table__cell--non-numeric date">'+CurrentCountry[i]['date']+'</td><td class="infections">'+CurrentCountry[i]['confirmed']+'</td><td class="deaths">'+CurrentCountry[i]['deaths']+'</td><td class="recovered">'+CurrentCountry[i]['recovered']+'</td>'
 					+  '</tr>';
 			}
 			out += '</tbody></table>';
 			document.getElementById("single-table").innerHTML = out;
+			// Sort.js
+			var options1 = {
+				valueNames: [ 'date', 'infections', 'deaths', 'recovered' ]
+			};
+			var singleTable = new List('single-table', options1);
+			singleTable.sort('date', { order: "desc" });
+			// Sort.js /
 			var CurrentCountryActiveCases = CurrentCountry[CurrentCountry.length-1]['confirmed']-CurrentCountry[CurrentCountry.length-1]['recovered']-CurrentCountry[CurrentCountry.length-1]['deaths'];
 			document.getElementById("single-overview").innerHTML = '<table style="margin: 0 auto; padding-bottom: 16px;">'
 				+  '<tr><td style="font-size: 18px; width: 100px" class="single-overview-td">Infections</td><td style="font-size: 22px; font-weight: bold; text-align: right;" class="single-overview-td">'+CurrentCountry[CurrentCountry.length-1]['confirmed']+'</td></tr>'
