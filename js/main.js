@@ -54,7 +54,7 @@ var CoData = '';
 function CoLoadOverview() {
 	// Get data from server
 	var xmlhttp = new XMLHttpRequest();
-	var url = "//pomber.github.io/covid19/timeseries.json?time="+new Date().getTime();
+	var url = "//pomber.github.io/covid19/timeseries.json";//?time="+new Date().getTime();
 	xmlhttp.onreadystatechange = function() {
 		if(this.readyState == 4 && this.status == 200) {
 			var JSONresponse = JSON.parse(this.responseText);
@@ -165,7 +165,7 @@ function CoLoadSingle(countryName) {
 	document.getElementById("single-heading").innerHTML = "Coronavirus Infections in " + String(countryName);
 	document.getElementById("single-chart").hidden = true;
 	var xmlhttp = new XMLHttpRequest();
-	var url = "//pomber.github.io/covid19/timeseries.json?time="+new Date().getTime();
+	var url = "//pomber.github.io/covid19/timeseries.json";//?time="+new Date().getTime();
 	xmlhttp.onreadystatechange = function() {
 		if(this.readyState == 4 && this.status == 200) {
 			var JSONresponse = JSON.parse(this.responseText);
