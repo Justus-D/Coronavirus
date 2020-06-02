@@ -200,7 +200,7 @@ function CoLoadSingle(countryName) {
 				+  '<tr><td style="font-size: 18px; width: 100px" class="single-overview-td">Infections</td><td style="font-size: 22px; font-weight: bold; text-align: right;" class="single-overview-td">'+CurrentCountry[CurrentCountry.length-1]['confirmed']+'</td></tr>'
 				+  '<tr><td style="font-size: 18px; width: 100px" class="single-overview-td">Deaths</h6></td><td style="font-size: 22px; font-weight: bold; text-align: right;" class="single-overview-td">'+CurrentCountry[CurrentCountry.length-1]['deaths']+'</td></tr>'
 				+  '<tr><td style="font-size: 18px; width: 100px" class="single-overview-td">Recovered</h6></td><td style="font-size: 22px; font-weight: bold; text-align: right;" class="single-overview-td">'+CurrentCountry[CurrentCountry.length-1]['recovered']+'</td></tr>'
-				+  '<tr><td style="font-size: 16px; width: 150px">Active cases<br><span style="font-size: 11px;">(Infections minus recovered minus deaths)</span></h6></td><td style="font-size: 22px; font-weight: bold; text-align: right;">'+CurrentCountryActiveCases+'</td></tr>'
+				+  '<tr><td style="font-size: 18px; width: 150px">Active cases</h6></td><td style="font-size: 22px; font-weight: bold; text-align: right;">'+CurrentCountryActiveCases+'</td></tr>'
 				+  '</table>';
 			/* Chart */
 			var ctx = document.getElementById('single-chart');
