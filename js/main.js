@@ -87,7 +87,7 @@ function CoSingle(countryName) {
 	document.getElementById("single-table").innerHTML = loading;
 	CoLoadSingle(countryName);
 	document.getElementById("page-single-country").hidden = false;
-	ga('set', 'page', '/#'+countryName+'');
+	ga('set', 'page', '/Germany');
 	ga('send', 'pageview');
 }
 // Init Chart
