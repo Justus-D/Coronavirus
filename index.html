@@ -67,6 +67,18 @@
 			max-width: 30vw;
 			overflow: auto;
 		}
+		.co-search {
+			margin: 0 auto;
+			width: 300px;
+			display: table;
+		}
+		.co-table-wrapper {
+			padding: 0;
+			margin: 0;
+			width: 100%;
+			width: 100vw;
+			overflow: auto;
+		}
 		.co-table {
 			margin: 0 auto;
 		}
@@ -84,12 +96,24 @@
 			text-align: center;
 			text-align: -webkit-center;
 		}
+		/*.single-chart {
+			width: 610px;
+			height: 414px;
+			max-width: 700px;
+			max-height: 500px;
+			display: block;
+		}*/
 		.single-chart-container {
 			width: 95vw;
 			height: 50vh;
 			overflow: hidden;
 			max-width: 700px;
 			max-height: 500px;
+			position: relative;
+		}
+		.single-chart-big {
+			width: 100vw !important;
+			height: calc(100vh - 56px) !important;
 		}
 		.sort.asc:after {
 			font-family: "Material Icons";
@@ -187,18 +211,24 @@
 				</div>
 				<div id="single-chart-div" class="single-chart-div">
 					<center>
-					<div class="single-chart-container">
-						<canvas id="single-chart" style="width: 95vw; height: 50vh; max-width: 700px; max-height: 500px;"></canvas>
+					<div class="single-chart-container" id="single-chart-container">
+						<canvas id="single-chart" class="single-chart"></canvas>
 					</div>
 					</center>
 					<div style="width: 100%;">
 						<div style="margin: 0 auto; /*width: 150px; width: max-content;*/ display: table;">
-							<span style="text-align: center;">
+							<div style="display: inline-block; text-align: left;">
 								<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="log-checkbox">
 									<input type="checkbox" id="log-checkbox" class="mdl-checkbox__input" onclick="singleChartLog();">
 									<span class="mdl-checkbox__label">Logarithmic scale</span>
+								</label><!--
+								<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="big-checkbox">
+									<input type="checkbox" id="big-checkbox" class="mdl-checkbox__input" onclick="singleChartBig();">
+									<span class="mdl-checkbox__label">Big chart</span>
 								</label>
-							</span>
+								<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" onclick="singleChart.update();">Update</button>
+								-->
+							</div>
 						</div>
 					</div>
 				</div>

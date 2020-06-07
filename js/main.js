@@ -60,19 +60,53 @@ function CoLoadOverview() {
 			var JSONresponse = JSON.parse(this.responseText);
 			var keys = Object.keys(JSONresponse);
 			CoData = JSONresponse;
-			var out = '<table id="overview-table-root" class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp co-table"><thead><tr><th class="mdl-data-table__cell--non-numeric sort" data-sort="country">Country</th><th data-sort="infections" class="sort">Infections</th><th data-sort="deaths" class="sort">Deaths</th><th class="mdl-data-table__cell--non-numeric">Info</th></tr></thead><tbody class="list">';
+			var out = ''
+					+ '<div>'
+					+ '<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label co-search">'
+					+	'<input class="mdl-textfield__input fuzzy-search" type="text" id="sample3">'
+					+	'<label class="mdl-textfield__label" for="sample3">Search</label>'
+					+ '</div>'
+					+ '<table id="overview-table-root" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp co-table">'
+					+	'<thead>'
+					+		'<tr>'
+					+			'<th class="mdl-data-table__cell--non-numeric sort" data-sort="country">Country</th>'
+					+			'<th data-sort="active-cases" class="sort">Active</th>'
+					+			'<th data-sort="infections" class="mdl-layout--large-screen-only sort">Infections</th>'
+					+			'<th data-sort="deaths" class="sort">Deaths</th>'
+					+			'<th class="mdl-data-table__cell--non-numeric">Info</th>'
+					+		'</tr>'
+					+	'</thead>'
+					+	'<tbody class="list">';
 			for (var i = 0; i < keys.length; i++) {
-				out += '<tr><td class="mdl-data-table__cell--non-numeric jwidth country">'+keys[i]+'</td><td class="infections">'+String(JSONresponse[keys[i]][JSONresponse[keys[i]].length-1]['confirmed'])+'</td><td class="deaths">'+String(JSONresponse[keys[i]][JSONresponse[keys[i]].length-1]['deaths'])+'</td>'
-					+  '<td class="mdl-data-table__cell--non-numeric info"><button class="mdl-button mdl-js-button mdl-button--icon" onclick="CoSingle('+"'"+String(keys[i])+"'"+')"><i class="material-icons">info</i></button></td>'
-					+  '</tr>';
+				out +=		'<tr>'
+					+			'<td class="mdl-data-table__cell--non-numeric jwidth country"';
+									if(keys[i] == 'Germany') {
+										out += ' style="font-weight: bold;"';
+									}
+									else {
+										out += '';
+									}
+				out	+=				'>'+keys[i]
+					+			'</td>'
+					+			'<td class="active-cases">'+String(JSONresponse[keys[i]][JSONresponse[keys[i]].length-1]['confirmed']-JSONresponse[keys[i]][JSONresponse[keys[i]].length-1]['deaths']-JSONresponse[keys[i]][JSONresponse[keys[i]].length-1]['recovered'])+'</td>'
+					+			'<td class="mdl-layout--large-screen-only infections">'+String(JSONresponse[keys[i]][JSONresponse[keys[i]].length-1]['confirmed'])+'</td>'
+					+			'<td class="deaths">'+String(JSONresponse[keys[i]][JSONresponse[keys[i]].length-1]['deaths'])+'</td>'
+					+			'<td class="mdl-data-table__cell--non-numeric info">'
+					+				'<button class="mdl-button mdl-js-button mdl-button--icon" onclick="CoSingle('+"'"+String(keys[i])+"'"+')">'
+					+					'<i class="material-icons">info</i>'
+					+				'</button>'
+					+			'</td>'
+					+		'</tr>';
 			}
-			out += '</tbody></table>';
+			out +=		'</tbody>'
+				+	  '</table>';
 			document.getElementById("overview-table").innerHTML = out;
+			componentHandler.upgradeDom();
 			var options = {
-				valueNames: [ 'country', 'infections', 'deaths' ]
+				valueNames: [ 'country', 'infections', 'deaths', 'active-cases' ]
 			};
 			var overviewTable = new List('overview-table', options);
-			overviewTable.sort('infections', { order: "desc" });
+			overviewTable.sort('active-cases', { order: "desc" });
 		}
 	};
 	xmlhttp.open("GET", url, true);
@@ -178,21 +212,38 @@ function CoLoadSingle(countryName) {
 			var CurrentCountryRecoveredArray = [];
 			var CurrentCountryDatesArray = [];
 			var CurrentCountryActiveCasesArray = [];
-			var out = '<table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp co-table"><thead><tr><th class="mdl-data-table__cell--non-numeric sort" data-sort="date">Date</th><th class="sort" data-sort="infections">Infections</th><th class="sort" data-sort="deaths">Deaths</th><th class="sort" data-sort="recovered">Recovered</th></tr></thead><tbody class="list">';
+			var out = '<div class="co-table-wrapper">'
+					+	'<table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp co-table">'
+					+		'<thead>'
+					+			'<tr>'
+					+				'<th class="mdl-data-table__cell--non-numeric sort" data-sort="date">Date</th>'
+					+				'<th class="sort" data-sort="active-cases">Active Cases</th>'
+					+				'<th class="sort" data-sort="infections">Infections</th>'
+					+				'<th class="sort" data-sort="deaths">Deaths</th>'
+					+				'<th class="sort" data-sort="recovered">Recovered</th>'
+					+			'</tr>'
+					+		'</thead>'
+					+		'<tbody class="list">';
 			for (var i = 0; i < CurrentCountry.length; i++) {
 				CurrentCountryInfectionsArray.push(CurrentCountry[i]['confirmed']);
 				CurrentCountryDeathsArray.push(CurrentCountry[i]['deaths']);
 				CurrentCountryRecoveredArray.push(CurrentCountry[i]['recovered']);
 				CurrentCountryDatesArray.push(CurrentCountry[i]['date']);
 				CurrentCountryActiveCasesArray.push(CurrentCountry[i]['confirmed']-CurrentCountry[i]['recovered']-CurrentCountry[i]['deaths']);
-				out += '<tr><td class="mdl-data-table__cell--non-numeric date">'+CurrentCountry[i]['date']+'</td><td class="infections">'+CurrentCountry[i]['confirmed']+'</td><td class="deaths">'+CurrentCountry[i]['deaths']+'</td><td class="recovered">'+CurrentCountry[i]['recovered']+'</td>'
-					+  '</tr>';
-			}
-			out += '</tbody></table>';
+				out +=			'<tr>'
+					+				'<td class="mdl-data-table__cell--non-numeric date">'+CurrentCountry[i]['date']+'</td>'
+					+				'<td class="active-cases">'+String(CurrentCountry[i]['confirmed']-CurrentCountry[i]['deaths']-CurrentCountry[i]['recovered'])+'</td>'
+					+				'<td class="infections">'+CurrentCountry[i]['confirmed']+'</td>'
+					+				'<td class="deaths">'+CurrentCountry[i]['deaths']+'</td>'
+					+				'<td class="recovered">'+CurrentCountry[i]['recovered']+'</td>'
+					+			'</tr>';}
+			out 	+=		'</tbody>'
+					+	'</table>'
+					+ '</div>';
 			document.getElementById("single-table").innerHTML = out;
 			// Sort.js
 			var options1 = {
-				valueNames: [ 'date', 'infections', 'deaths', 'recovered' ]
+				valueNames: [ 'date', 'infections', 'deaths', 'recovered', 'active-cases' ]
 			};
 			var singleTable = new List('single-table', options1);
 			singleTable.sort('date', { order: "desc" });
@@ -243,7 +294,7 @@ function CoLoadSingle(countryName) {
 				},
 				options: {
 					responsive: true,
-					//maintainAspectRatio: true,
+					maintainAspectRatio: false,
 					//aspectRatio: 1,
 					title: {
 						display: true,
@@ -282,7 +333,8 @@ function CoLoadSingle(countryName) {
 			singleChart.options = config.options;
 			singleChart.data = config.data;
 			singleChart.update();
-			singleChartLog();
+			singleChartLog();		
+			singleChartBig();
 		}
 	};
 	xmlhttp.open("GET", url, true);
@@ -299,6 +351,23 @@ function singleChartLog() {
 		singleChart.update();
 	}
 }
+/*function singleChartBig() {
+	var state = document.getElementById("big-checkbox").checked;
+	if(state == true) {
+		document.getElementById('single-chart-container').classList.add('single-chart-big');
+		var parent = document.getElementById("single-chart-container");
+		singleChart.canvas.parentNode.style.height = window.getComputedStyle(parent, null).getPropertyValue("height");
+		singleChart.canvas.parentNode.style.width = window.getComputedStyle(parent, null).getPropertyValue("width");
+		singleChart.update();
+	}
+	if(state == false) {
+		document.getElementById('single-chart-container').classList.remove('single-chart-big');
+		var parent = document.getElementById("single-chart-container");
+		singleChart.canvas.parentNode.style.height = window.getComputedStyle(parent, null).getPropertyValue("height");
+		singleChart.canvas.parentNode.style.width = window.getComputedStyle(parent, null).getPropertyValue("width");
+		singleChart.update();
+	}
+}*/
 function CoDataSource() {
 	CoClearScreen();
 	history.pushState("","","#data-source");
