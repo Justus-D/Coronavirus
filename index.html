@@ -5,7 +5,7 @@
 	<meta name="description" content="This page shows you infections of the Coronavirus per country and in detail with the numbers of every day.">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- Google Analytics -->
-	<script>
+	<!--<script>
 		function clientId() {
 			var xmlHttp = new XMLHttpRequest();
 			xmlHttp.open("GET", "https://herrblauzahn.de/clientId.php", false);
@@ -25,19 +25,16 @@
 		});
 
 		ga('send', 'pageview');
-	</script>
+	</script>-->
 	<!-- End Google Analytics -->
-	<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.teal-indigo.min.css">
+	<!--<script defer src="js/main.js"></script>-->
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-	<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-	<script defer src="js/main.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
 	<link rel="manifest" href="manifest.json">
 	<meta name="theme-color" content="#ffffff">
 	<link rel="apple-touch-icon" sizes="192x192" href="icons/icon-192x192.png">
 	<link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
-
 	<link rel="apple-touch-icon" sizes="60x60" href="/favicons/apple-icon-60x60.png">
 	<link rel="apple-touch-icon" sizes="72x72" href="/favicons/apple-icon-72x72.png">
 	<link rel="apple-touch-icon" sizes="76x76" href="/favicons/apple-icon-76x76.png">
@@ -52,15 +49,16 @@
 	<link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png">
 	<meta name="msapplication-TileColor" content="#ffffff">
 	<meta name="msapplication-TileImage" content="/favicons/ms-icon-144x144.png">
-
+	<!--
 	<script type="text/javascript">
 		if ('serviceWorker' in navigator) {
 		  navigator.serviceWorker.register('service-worker.js');
 		}
 	</script>
 	<script type="text/javascript">
-		
+
 	</script>
+	-->
 	<style type="text/css">
 		.jwidth {
 			/*max-width: 150px;*/
@@ -69,6 +67,11 @@
 		}
 		.co-table {
 			margin: 0 auto;
+			width: unset !important;
+		}
+		.co-table>tbody>tr>td, .co-table>tbody>tr>th, .co-table>tfoot>tr>td, .co-table>tfoot>tr>th, .co-table>thead>tr>td, .co-table>thead>tr>th {
+			padding: 4px !important;
+			padding-right: 20px !important;
 		}
 		.co-table-div {
 			width: 100%;
@@ -76,6 +79,10 @@
 		}
 		.single-overview {
 			width: 100%;
+		}
+		.single-overview-table {
+			line-height: 24px;
+			font-family: "Helvetica", "Arial", sans-serif;
 		}
 		.single-overview-td {
 			border-bottom: 1px dotted gray;
@@ -105,123 +112,83 @@
 			position: relative;
 			top: 4px;
 		}
-		/*
-		.sort:after {
-			display:inline-block;
-			width: 0;
-			height: 0;
-			border-left: 5px solid transparent;
-			border-right: 5px solid transparent;
-			border-bottom: 5px solid transparent;
-			content:"";
-			position: relative;
-			top:-10px;
-			right:-5px;
-		}
-		.sort.desc:after {
-			width: 0;
-			height: 0;
-			border-left: 5px solid transparent;
-			border-right: 5px solid transparent;
-			border-bottom: 5px solid black;
-			content:"";
-			position: relative;
-			top:-4px;
-			right:-5px;
-		}*/
 	</style>
+	<!-- Bootstrap 3.5 -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
 </head>
 <body onload="CoOnLoad()">
-<!-- Always shows a header, even in smaller screens. -->
-<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-	<header class="mdl-layout__header">
-		<div class="mdl-layout__header-row">
-			<!-- Title -->
-			<span class="mdl-layout-title">Coronavirus Infections</span>
-			<!-- Add spacer, to align navigation to the right -->
-			<div class="mdl-layout-spacer"></div>
-			<!-- Navigation. We hide it in small screens. -->
-			<nav class="mdl-navigation mdl-layout--large-screen-only">
-				<div style="position: relative; padding: 16px;">
-					<button class="mdl-button mdl-js-button mdl-button--icon" onclick="CoStart();">
-						<i class="material-icons">home</i>
-					</button>
-				</div>
-			</nav>
-			<nav class="mdl-navigation mdl-layout--small-screen-only">
-				<div style="position: relative; padding: 16px;">
-					<button class="mdl-button mdl-js-button mdl-button--icon" onclick="CoStart();">
-						<i class="material-icons">home</i>
-					</button>
-				</div>
-			</nav>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="#home">Coronavirus Infections</a>
 		</div>
-	</header>
-	<div class="mdl-layout__drawer">
-		<span class="mdl-layout-title">Coronavirus</span>
-		<nav class="mdl-navigation">
-			<a class="mdl-navigation__link" href="/">Overwiew</a>
-			<a class="mdl-navigation__link mdl-menu__item--full-bleed-divider" href="/#data-source">Data Source</a>
-			<a class="mdl-navigation__link" href="https://github.com/HerrBlauzahn/Coronavirus" target="_BLANK">GitHub</a>
-		</nav>
+		<div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li id="nav-overview"><a href="#home">Overview</a></li>
+            <li id="nav-data-source"><a href="#data-source">Data Source</a></li>
+            <li><a href="https://github.com/HerrBlauzahn/Coronavirus" target="_BLANK">GitHub</a></li>
+          </ul>
+        </div>
 	</div>
-	<main class="mdl-layout__content">
-		<div class="page-content">
-			<div id="page-overview" hidden>
-				<h5 style="text-align: center;">Coronavirus Infections by Country</h5>
-				<div id="overview-table" class="co-table-div sort">
-					<br>
-					<center>
-						<div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></div>
-					</center>
-				</div>
-				<br>
+</nav>
+<div class="container" role="main" style="margin-top: 50px;">
+	<div id="page-overview" hidden>
+		<h3 style="text-align: center;">Coronavirus Infections by Country</h3>
+		<div id="overview-table" class="sort">
+			<br>
+			<center>
+				<div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></div>
+			</center>
+		</div>
+		<br>
+	</div>
+	<div id="page-single-country" hidden>
+		<h3 style="text-align: center;" id="single-heading">Coronavirus Infections in ...</h3>
+		<div id="single-overview" class="single-overview">
+			<br>
+			<center>
+				<div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></div>
+			</center>
+		</div>
+		<div id="single-chart-div" class="single-chart-div">
+			<center>
+			<div class="single-chart-container">
+				<canvas id="single-chart" style="width: 95vw; height: 50vh; max-width: 700px; max-height: 500px;"></canvas>
 			</div>
-			<div id="page-single-country" hidden>
-				<h5 style="text-align: center;" id="single-heading">Coronavirus Infections in ...</h5>
-				<div id="single-overview" class="single-overview">
-					<br>
-					<center>
-						<div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></div>
-					</center>
+			</center>
+			<div style="width: 100%;">
+				<div style="margin: 0 auto; /*width: 150px; width: max-content;*/ display: table;">
+					<label class="checkbox-inline">
+						<input type="checkbox" id="log-checkbox" onclick="singleChartLog()">Logarithmic scale
+					</label>
 				</div>
-				<div id="single-chart-div" class="single-chart-div">
-					<center>
-					<div class="single-chart-container">
-						<canvas id="single-chart" style="width: 95vw; height: 50vh; max-width: 700px; max-height: 500px;"></canvas>
-					</div>
-					</center>
-					<div style="width: 100%;">
-						<div style="margin: 0 auto; /*width: 150px; width: max-content;*/ display: table;">
-							<span style="text-align: center;">
-								<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="log-checkbox">
-									<input type="checkbox" id="log-checkbox" class="mdl-checkbox__input" onclick="singleChartLog();">
-									<span class="mdl-checkbox__label">Logarithmic scale</span>
-								</label>
-							</span>
-						</div>
-					</div>
-				</div>
-				<br>
-				<div id="single-table" class="co-table-div">
-				</div>
-				<br>
-			</div>
-			<div id="page-data-source" hidden>
-				<h5 style="text-align: center;" id="single-heading">Data Source</h5>
-				<p style="margin: 32px;">The data displayed on this site is using the <a href="https://pomber.github.io/covid19/timeseries.json" target="_BLANK">JSON time-series</a> from <a href="https://github.com/pomber" target="_BLANK">pomber</a> on <a href="https://github.com/pomber/covid19" target="_BLANK">GitHub</a>. It uses data from <a href="https://github.com/CSSEGISandData/COVID-19" target="_BLANK">CSSEGISandData/COVID-19</a> and merges it into a JSON file.</p>
-				<br>
-			</div>
-			<div id="page-offline" hidden>
-				<h5 style="text-align: center;" id="single-heading">Offline</h5>
-				<div style="margin: 32px;">
-					<p>You appear to be offline.</p>
-					<a href="/" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Refresh</a>
-				</div>
-				<br>
 			</div>
 		</div>
-	</main>
+		<br>
+		<div id="single-table" class="co-table-div"></div>
+		<br>
+	</div>
+	<div id="page-data-source" hidden>
+		<h3 style="text-align: center;" id="single-heading">Data Source</h3>
+		<p style="margin: 32px;">The data displayed on this site is using the <a href="https://pomber.github.io/covid19/timeseries.json" target="_BLANK">JSON time-series</a> from <a href="https://github.com/pomber" target="_BLANK">pomber</a> on <a href="https://github.com/pomber/covid19" target="_BLANK">GitHub</a>. It uses data from <a href="https://github.com/CSSEGISandData/COVID-19" target="_BLANK">CSSEGISandData/COVID-19</a> and merges it into a JSON file.</p>
+		<br>
+	</div>
+	<div id="page-offline" hidden>
+		<h3 style="text-align: center;" id="single-heading">Offline</h3>
+		<div style="margin: 32px;">
+			<p>You appear to be offline.</p>
+			<a href="/" class="btn btn-primary">Refresh</a>
+		</div>
+		<br>
+	</div>
 </div>
 <script type="text/javascript" src="js/main.js"></script>
 </body>

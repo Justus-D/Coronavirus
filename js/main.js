@@ -41,6 +41,8 @@ function CoClearScreen() {
 	document.getElementById('page-single-country').hidden = true;
 	document.getElementById('page-data-source').hidden = true;
 	document.getElementById('page-offline').hidden = true;
+	document.getElementById('nav-overview').classList.remove('active');
+	document.getElementById('nav-data-source').classList.remove('active');
 }
 var loading = '<br><center><div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></div></center>';
 function CoStart() {
@@ -49,6 +51,7 @@ function CoStart() {
 	CoClearScreen();
 	CoLoadOverview();
 	document.getElementById("page-overview").hidden = false;
+	document.getElementById('nav-overview').classList.add('active');
 }
 var CoData = '';
 function CoLoadOverview() {
@@ -60,16 +63,35 @@ function CoLoadOverview() {
 			var JSONresponse = JSON.parse(this.responseText);
 			var keys = Object.keys(JSONresponse);
 			CoData = JSONresponse;
-			var out = '<table id="overview-table-root" class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp co-table"><thead><tr><th class="mdl-data-table__cell--non-numeric sort" data-sort="country">Country</th><th data-sort="infections" class="sort">Infections</th><th data-sort="deaths" class="sort">Deaths</th><th class="mdl-data-table__cell--non-numeric">Info</th></tr></thead><tbody class="list">';
+			var out = '<table id="overview-table-root" class="table table-hover co-table">'
+					+	'<thead>'
+					+		'<tr>'
+					+			'<th class="sort" data-sort="country">Country</th>'
+					+			'<th data-sort="infections" class="sort">Infections</th>'
+					+			'<th data-sort="deaths" class="sort">Deaths</th>'
+					+			'<th data-sort="active-cases" class="sort">Active Cases</th>'
+					+			'<th class="">Info</th>'
+					+		'</tr>'
+					+	'</thead>'
+					+	'<tbody class="list">';
 			for (var i = 0; i < keys.length; i++) {
-				out += '<tr><td class="mdl-data-table__cell--non-numeric jwidth country">'+keys[i]+'</td><td class="infections">'+String(JSONresponse[keys[i]][JSONresponse[keys[i]].length-1]['confirmed'])+'</td><td class="deaths">'+String(JSONresponse[keys[i]][JSONresponse[keys[i]].length-1]['deaths'])+'</td>'
-					+  '<td class="mdl-data-table__cell--non-numeric info"><button class="mdl-button mdl-js-button mdl-button--icon" onclick="CoSingle('+"'"+String(keys[i])+"'"+')"><i class="material-icons">info</i></button></td>'
-					+  '</tr>';
+				out +=		'<tr>'
+					+			'<td class="jwidth country">'+keys[i]+'</td>'
+					+			'<td class="infections">'+String(JSONresponse[keys[i]][JSONresponse[keys[i]].length-1]['confirmed'])+'</td>'
+					+			'<td class="deaths">'+String(JSONresponse[keys[i]][JSONresponse[keys[i]].length-1]['deaths'])+'</td>'
+					+			'<td class="active-cases">'+String(JSONresponse[keys[i]][JSONresponse[keys[i]].length-1]['confirmed']-JSONresponse[keys[i]][JSONresponse[keys[i]].length-1]['deaths']-JSONresponse[keys[i]][JSONresponse[keys[i]].length-1]['recovered'])+'</td>'
+					+			'<td class="info-col">'
+					+				'<button class="btn btn-default btn-xs" onclick="CoSingle('+"'"+String(keys[i])+"'"+')">'
+					+					'<i class="material-icons" style="font-size:16px;">info</i>'
+					+				'</button>'
+					+			'</td>'
+					+		'</tr>';
 			}
-			out += '</tbody></table>';
+			out +=		'</tbody>'
+				+	  '</table>';
 			document.getElementById("overview-table").innerHTML = out;
 			var options = {
-				valueNames: [ 'country', 'infections', 'deaths' ]
+				valueNames: [ 'country', 'infections', 'deaths', 'active-cases' ]
 			};
 			var overviewTable = new List('overview-table', options);
 			overviewTable.sort('infections', { order: "desc" });
@@ -178,14 +200,14 @@ function CoLoadSingle(countryName) {
 			var CurrentCountryRecoveredArray = [];
 			var CurrentCountryDatesArray = [];
 			var CurrentCountryActiveCasesArray = [];
-			var out = '<table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp co-table"><thead><tr><th class="mdl-data-table__cell--non-numeric sort" data-sort="date">Date</th><th class="sort" data-sort="infections">Infections</th><th class="sort" data-sort="deaths">Deaths</th><th class="sort" data-sort="recovered">Recovered</th></tr></thead><tbody class="list">';
+			var out = '<table class="table table-hover co-table"><thead><tr><th class="sort" data-sort="date">Date</th><th class="sort" data-sort="infections">Infections</th><th class="sort" data-sort="deaths">Deaths</th><th class="sort" data-sort="recovered">Recovered</th></tr></thead><tbody class="list">';
 			for (var i = 0; i < CurrentCountry.length; i++) {
 				CurrentCountryInfectionsArray.push(CurrentCountry[i]['confirmed']);
 				CurrentCountryDeathsArray.push(CurrentCountry[i]['deaths']);
 				CurrentCountryRecoveredArray.push(CurrentCountry[i]['recovered']);
 				CurrentCountryDatesArray.push(CurrentCountry[i]['date']);
 				CurrentCountryActiveCasesArray.push(CurrentCountry[i]['confirmed']-CurrentCountry[i]['recovered']-CurrentCountry[i]['deaths']);
-				out += '<tr><td class="mdl-data-table__cell--non-numeric date">'+CurrentCountry[i]['date']+'</td><td class="infections">'+CurrentCountry[i]['confirmed']+'</td><td class="deaths">'+CurrentCountry[i]['deaths']+'</td><td class="recovered">'+CurrentCountry[i]['recovered']+'</td>'
+				out += '<tr><td class="date">'+CurrentCountry[i]['date']+'</td><td class="infections">'+CurrentCountry[i]['confirmed']+'</td><td class="deaths">'+CurrentCountry[i]['deaths']+'</td><td class="recovered">'+CurrentCountry[i]['recovered']+'</td>'
 					+  '</tr>';
 			}
 			out += '</tbody></table>';
@@ -198,7 +220,7 @@ function CoLoadSingle(countryName) {
 			singleTable.sort('date', { order: "desc" });
 			// Sort.js /
 			var CurrentCountryActiveCases = CurrentCountry[CurrentCountry.length-1]['confirmed']-CurrentCountry[CurrentCountry.length-1]['recovered']-CurrentCountry[CurrentCountry.length-1]['deaths'];
-			document.getElementById("single-overview").innerHTML = '<table style="margin: 0 auto; padding-bottom: 16px;">'
+			document.getElementById("single-overview").innerHTML = '<table style="margin: 0 auto; padding-bottom: 16px;" class="single-overview-table">'
 				+  '<tr><td style="font-size: 18px; width: 100px" class="single-overview-td">Infections</td><td style="font-size: 22px; font-weight: bold; text-align: right;" class="single-overview-td">'+CurrentCountry[CurrentCountry.length-1]['confirmed']+'</td></tr>'
 				+  '<tr><td style="font-size: 18px; width: 100px" class="single-overview-td">Deaths</h6></td><td style="font-size: 22px; font-weight: bold; text-align: right;" class="single-overview-td">'+CurrentCountry[CurrentCountry.length-1]['deaths']+'</td></tr>'
 				+  '<tr><td style="font-size: 18px; width: 100px" class="single-overview-td">Recovered</h6></td><td style="font-size: 22px; font-weight: bold; text-align: right;" class="single-overview-td">'+CurrentCountry[CurrentCountry.length-1]['recovered']+'</td></tr>'
@@ -303,6 +325,7 @@ function CoDataSource() {
 	CoClearScreen();
 	history.pushState("","","#data-source");
 	document.getElementById("page-data-source").hidden = false;
+	document.getElementById('nav-data-source').classList.add('active');
 }
 function CoOffline() {
 	CoClearScreen();
