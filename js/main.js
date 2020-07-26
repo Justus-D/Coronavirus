@@ -195,6 +195,8 @@ var ctxInit = document.getElementById('single-chart');
 					}
 				}
 			};
+Chart.defaults.global.elements.point.radius = 0;
+Chart.defaults.global.elements.point.hoverRadius = 4;
 var singleChart = new Chart(ctxInit, configInit);
 // ---
 function CoLoadSingle(countryName) {
