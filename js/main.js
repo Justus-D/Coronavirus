@@ -1,3 +1,6 @@
+function toggleDrawer() {
+	document.getElementById('mdl-layout-id').MaterialLayout.toggleDrawer();
+}
 function CoOnLoad() {
 	CoSelectPage();
 }
@@ -123,6 +126,14 @@ function CoSingle(countryName) {
 	document.getElementById("page-single-country").hidden = false;
 	/*ga('set', 'page', '/#'+countryName);
 	ga('send', 'pageview');*/
+
+	/*
+	var ChartContainerWidth = document.getElementById("single-chart-container").clientWidth;
+	var ChartContainerHeight = document.getElementById("single-chart-container").clientHeight;
+	document.getElementById("single-chart-container").style = 'width: '+ChartContainerWidth+'; height: '+ChartContainerHeight+';';
+	document.getElementById("single-chart").style = 'width: '+ChartContainerWidth+'; height: '+ChartContainerHeight+';';
+	document.getElementById("single-chart").width = ChartContainerWidth;
+	document.getElementById("single-chart").height = ChartContainerHeight;*/
 }
 // Init Chart
 var ctxInit = document.getElementById('single-chart');
@@ -197,6 +208,9 @@ var configInit = {
 };
 Chart.defaults.global.elements.point.radius = 0;
 Chart.defaults.global.elements.point.hoverRadius = 4;
+try {
+	singleChart.destroy();
+} catch (e) {}
 var singleChart = new Chart(ctxInit, configInit);
 // ---
 function CoLoadSingle(countryName) {
@@ -289,7 +303,7 @@ function CoLoadSingle(countryName) {
 						},
 						{
 							label: 'Recovered',
-							backgroundColor: 'rgb(75, 192, 192)',//Green
+							backgroundColor: 'rgb(75, 192, 192)',//Bläulich
 							borderColor: 'rgb(75, 192, 192)',
 							data: CurrentCountryRecoveredArray, // Array mit ints
 							fill: false,
@@ -303,7 +317,7 @@ function CoLoadSingle(countryName) {
 						},
 						{
 							label: 'Infections Delta',
-							backgroundColor: 'rgb(255, 255, 255)', //Orange
+							backgroundColor: 'rgb(69, 217, 109)', //Green
 							borderColor: 'rgb(69, 217, 109)',
 							data: CurrentCountryInfectionsDeltaArray, // Array mit ints
 							fill: false,
@@ -346,14 +360,15 @@ function CoLoadSingle(countryName) {
 				}
 			};
 			//singleChart.destroy();
-			//var singleChart = new Chart(ctx, config);
+			// /*var singleChart = new lol Chart(ctx, config);*/
 			//singleChart.reset();
 			document.getElementById("single-chart").hidden = false;
 			singleChart.options = config.options;
 			singleChart.data = config.data;
 			singleChart.update();
-			singleChartLog();		
-			singleChartBig();
+			singleChartLog();
+			singleChartDelta();
+			//singleChartBig();
 		}
 	};
 	xmlhttp.open("GET", url, true);
