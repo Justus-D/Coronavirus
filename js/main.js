@@ -237,7 +237,7 @@ function CoLoadSingle(countryName) {
 				try {
 					change = CurrentCountry[i]['confirmed']-CurrentCountry[i-1]['confirmed'];
 				}
-				catch () {
+				catch (e) {
 					change = 0;
 				}
 				CurrentCountryInfectionsDeltaArray.push(change);
