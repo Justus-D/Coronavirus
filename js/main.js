@@ -304,7 +304,7 @@ function CoLoadSingle(countryName) {
 						{
 							label: 'Infections Delta',
 							backgroundColor: 'rgb(255, 255, 255)', //Orange
-							borderColor: 'rgb(255, 205, 86)',
+							borderColor: 'rgb(69, 217, 109)',
 							data: CurrentCountryInfectionsDeltaArray, // Array mit ints
 							fill: false,
 							hidden: true,
