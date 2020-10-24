@@ -126,75 +126,75 @@ function CoSingle(countryName) {
 }
 // Init Chart
 var ctxInit = document.getElementById('single-chart');
-			var configInit = {
-				type: 'line',
-				data: {
-					labels: [], //Array mit Strings auf x Achse
-					datasets: [
-						{
-							label: 'Infections',
-							backgroundColor: 'rgb(255, 205, 86)',//Yellow
-							borderColor: 'rgb(255, 205, 86)',
-							data: [], // Array mit ints
-							fill: false,
-						},
-						{
-							label: 'Deaths',
-							fill: false,
-							backgroundColor: 'rgb(255, 99, 132)',//Red
-							borderColor: 'rgb(255, 99, 132)',
-							data: [], //Array mit ints
-						},
-						{
-							label: 'Recovered',
-							backgroundColor: 'rgb(75, 192, 192)',//Green
-							borderColor: 'rgb(75, 192, 192)',
-							data: [], // Array mit ints
-							fill: false,
-						},
-						{
-							label: 'Active Cases',
-							backgroundColor: 'rgb(255, 159, 64)', //Orange
-							borderColor: 'rgb(255, 159, 64)',
-							data: [], // Array mit ints
-							fill: false,
-						},
-					]
-				},
-				options: {
-					responsive: true,
-					//maintainAspectRatio: true,
-					//aspectRatio: 1,
-					title: {
-						display: true,
-						text: 'Coronavirus Infections in ...'
-					},
-					tooltips: {
-						mode: 'index',
-						intersect: false,
-					},
-					hover: {
-						mode: 'nearest',
-						intersect: true
-					},
-					scales: {
-						xAxes: [{
-							display: true,
-							scaleLabel: {
-								display: true,
-								labelString: 'Date'
-							}
-						}],
-						yAxes: [{
-							display: true,
-							scaleLabel: {
-								display: true,
-								labelString: 'Value'
-							}
-						}]
-					}
+var configInit = {
+	type: 'line',
+	data: {
+		labels: [], //Array mit Strings auf x Achse
+		datasets: [
+			{
+				label: 'Infections',
+				backgroundColor: 'rgb(255, 205, 86)',//Yellow
+				borderColor: 'rgb(255, 205, 86)',
+				data: [], // Array mit ints
+				fill: false,
+			},
+			{
+				label: 'Deaths',
+				fill: false,
+				backgroundColor: 'rgb(255, 99, 132)',//Red
+				borderColor: 'rgb(255, 99, 132)',
+				data: [], //Array mit ints
+			},
+			{
+				label: 'Recovered',
+				backgroundColor: 'rgb(75, 192, 192)',//Green
+				borderColor: 'rgb(75, 192, 192)',
+				data: [], // Array mit ints
+				fill: false,
+			},
+			{
+				label: 'Active Cases',
+				backgroundColor: 'rgb(255, 159, 64)', //Orange
+				borderColor: 'rgb(255, 159, 64)',
+				data: [], // Array mit ints
+				fill: false,
+			},
+		]
+	},
+	options: {
+		responsive: true,
+		//maintainAspectRatio: true,
+		//aspectRatio: 1,
+		title: {
+			display: true,
+			text: 'Coronavirus Infections in ...'
+		},
+		tooltips: {
+			mode: 'index',
+			intersect: false,
+		},
+		hover: {
+			mode: 'nearest',
+			intersect: true
+		},
+		scales: {
+			xAxes: [{
+				display: true,
+				scaleLabel: {
+					display: true,
+					labelString: 'Date'
 				}
-			};
+			}],
+			yAxes: [{
+				display: true,
+				scaleLabel: {
+					display: true,
+					labelString: 'Value'
+				}
+			}]
+		}
+	}
+};
 Chart.defaults.global.elements.point.radius = 0;
 Chart.defaults.global.elements.point.hoverRadius = 4;
 var singleChart = new Chart(ctxInit, configInit);
