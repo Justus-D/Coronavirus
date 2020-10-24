@@ -63,7 +63,7 @@ function CoLoadOverview() {
 			var out = ''
 					+ '<div>'
 					+ '<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label co-search">'
-					+	'<input class="mdl-textfield__input fuzzy-search" type="text" id="sample3">'
+					+	'<input class="mdl-textfield__input fuzzy-search" type="text" id="sample3" autocomplete="off">'
 					+	'<label class="mdl-textfield__label" for="sample3">Search</label>'
 					+ '</div>'
 					+ '<table id="overview-table-root" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp co-table">'
@@ -214,6 +214,7 @@ function CoLoadSingle(countryName) {
 			var CurrentCountryRecoveredArray = [];
 			var CurrentCountryDatesArray = [];
 			var CurrentCountryActiveCasesArray = [];
+			var CurrentCountryInfectionsDeltaArray = [];
 			var out = '<div class="co-table-wrapper">'
 					+	'<table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp co-table">'
 					+		'<thead>'
@@ -232,10 +233,18 @@ function CoLoadSingle(countryName) {
 				CurrentCountryRecoveredArray.push(CurrentCountry[i]['recovered']);
 				CurrentCountryDatesArray.push(CurrentCountry[i]['date']);
 				CurrentCountryActiveCasesArray.push(CurrentCountry[i]['confirmed']-CurrentCountry[i]['recovered']-CurrentCountry[i]['deaths']);
+				var change;
+				try {
+					change = CurrentCountry[i]['confirmed']-CurrentCountry[i-1]['confirmed'];
+				}
+				catch {
+					change = 0;
+				}
+				CurrentCountryInfectionsDeltaArray.push(change);
 				out +=			'<tr>'
 					+				'<td class="mdl-data-table__cell--non-numeric date">'+CurrentCountry[i]['date']+'</td>'
 					+				'<td class="active-cases">'+String(CurrentCountry[i]['confirmed']-CurrentCountry[i]['deaths']-CurrentCountry[i]['recovered'])+'</td>'
-					+				'<td class="infections">'+CurrentCountry[i]['confirmed']+'</td>'
+					+				'<td class="infections">'+CurrentCountry[i]['confirmed']+' (+'+change+')'+'</td>'
 					+				'<td class="deaths">'+CurrentCountry[i]['deaths']+'</td>'
 					+				'<td class="recovered">'+CurrentCountry[i]['recovered']+'</td>'
 					+			'</tr>';}
@@ -291,6 +300,14 @@ function CoLoadSingle(countryName) {
 							borderColor: 'rgb(255, 159, 64)',
 							data: CurrentCountryActiveCasesArray, // Array mit ints
 							fill: false,
+						},
+						{
+							label: 'Infections Delta',
+							backgroundColor: 'rgb(255, 255, 255)', //Orange
+							borderColor: 'rgb(255, 205, 86)',
+							data: CurrentCountryInfectionsDeltaArray, // Array mit ints
+							fill: false,
+							hidden: true,
 						},
 					]
 				},
@@ -350,6 +367,25 @@ function singleChartLog() {
 	}
 	if(state == false) {
 		singleChart.options.scales.yAxes[0].type = "linear";
+		singleChart.update();
+	}
+}
+function singleChartDelta() {
+	var state = document.getElementById("delta-checkbox").checked;
+	if(state == true) {
+		singleChart.data.datasets[0].hidden = true;
+		singleChart.data.datasets[1].hidden = true;
+		singleChart.data.datasets[2].hidden = true;
+		singleChart.data.datasets[3].hidden = true;
+		singleChart.data.datasets[4].hidden = false;
+		singleChart.update();
+	}
+	if(state == false) {
+		singleChart.data.datasets[0].hidden = false;
+		singleChart.data.datasets[1].hidden = false;
+		singleChart.data.datasets[2].hidden = false;
+		singleChart.data.datasets[3].hidden = false;
+		singleChart.data.datasets[4].hidden = true;
 		singleChart.update();
 	}
 }
