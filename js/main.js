@@ -57,6 +57,7 @@ var CoData = '';
 function CoLoadOverview() {
 	// Get data from server
 	var xmlhttp = new XMLHttpRequest();
+	//var url = "timeseries.json";
 	var url = "//pomber.github.io/covid19/timeseries.json";//?time="+new Date().getTime();
 	xmlhttp.onreadystatechange = function() {
 		if(this.readyState == 4 && this.status == 200) {
@@ -76,7 +77,7 @@ function CoLoadOverview() {
 					+			'<th data-sort="active-cases" class="sort">Active</th>'
 					+			'<th data-sort="infections" class="mdl-layout--large-screen-only sort">Infections</th>'
 					+			'<th data-sort="deaths" class="sort">Deaths</th>'
-					+			'<th class="mdl-data-table__cell--non-numeric">Info</th>'
+					+			'<th class="mdl-data-table__cell--non-numeric"></th>'
 					+		'</tr>'
 					+	'</thead>'
 					+	'<tbody class="list">';
@@ -95,7 +96,10 @@ function CoLoadOverview() {
 					+			'<td class="mdl-layout--large-screen-only infections">'+String(JSONresponse[keys[i]][JSONresponse[keys[i]].length-1]['confirmed'])+'</td>'
 					+			'<td class="deaths">'+String(JSONresponse[keys[i]][JSONresponse[keys[i]].length-1]['deaths'])+'</td>'
 					+			'<td class="mdl-data-table__cell--non-numeric info">'
-					+				'<button class="mdl-button mdl-js-button mdl-button--icon" onclick="CoSingle('+"'"+String(keys[i])+"'"+')">'
+					+				'<button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent desktop-only" onclick="CoSingle('+"'"+String(keys[i])+"'"+')">'
+					+					'details'
+					+				'</button>'
+					+				'<button class="mdl-button mdl-js-button mdl-button--icon mdl-button--accent mobile-only" onclick="CoSingle('+"'"+String(keys[i])+"'"+')">'
 					+					'<i class="material-icons">info</i>'
 					+				'</button>'
 					+			'</td>'
