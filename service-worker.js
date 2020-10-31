@@ -15,7 +15,7 @@
 
 // Incrementing CACHE_VERSION will kick off the install event and force previously cached
 // resources to be cached again.
-const CACHE_VERSION = 10;
+const CACHE_VERSION = 11;
 let CURRENT_CACHES = {
   offline: 'offline-v' + CACHE_VERSION
 };
@@ -45,10 +45,13 @@ const filesToCache = [
   'https://code.getmdl.io/1.3.0/material.teal-indigo.min.css',
   'https://fonts.googleapis.com/icon?family=Material+Icons',
   'https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js',
+  'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js',
   'manifest.json',
   '/manifest.json',
   'service-worker.js',
-  '/service-worker.js'
+  '/service-worker.js',
+  'https://coronavirus.herrblauzahn.de'
+  'https://coronavirus.herrblauzahn.de/js/main.js',
 ];
 
 self.addEventListener('install', event => {
